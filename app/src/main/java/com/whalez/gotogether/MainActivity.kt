@@ -17,9 +17,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Log.d("kkkMainActivity", "onCreate")
-
-//        Log.d("kkk로그인여부?", Session.getCurrentSession().checkAndImplicitOpen().toString())
         checkUserLoginStatus(this@MainActivity)
 
 

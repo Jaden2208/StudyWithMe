@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
-import com.kakao.usermgmt.UserManagement
 import com.kakao.util.exception.KakaoException
 
 
@@ -14,19 +13,16 @@ class LoginActivity : AppCompatActivity() {
 
         private val sessionCallback = object : ISessionCallback {
         override fun onSessionOpenFailed(exception: KakaoException?) {
-            Log.d("kkk", "로그인 실패")
+            Log.d("kkk", "로그인 실패: ${exception.toString()}")
         }
 
         override fun onSessionOpened() {
-            Log.d("kkk", "로그인 성공")
             if(kakaoLogin == 0){
                 kakaoLogin = 1
                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }
-
-
         }
 
     }
@@ -34,8 +30,6 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-        Log.d("kkkLoginActivity", "onCreate")
 
         // 세션 콜백 등록
         Session.getCurrentSession().addCallback(sessionCallback)

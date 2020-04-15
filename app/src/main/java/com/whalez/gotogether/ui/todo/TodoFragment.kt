@@ -1,5 +1,6 @@
 package com.whalez.gotogether.ui.todo
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,6 +40,11 @@ class TodoFragment : Fragment() {
         todoViewModel.getAll().observe(this,
             Observer { todoList -> todoAdapter.setTodoList(todoList) }
         )
+
+        btn_add.setOnClickListener {
+            val intent = Intent(activity, AddTodoActivity::class.java)
+            startActivity(intent)
+        }
 
 
     }

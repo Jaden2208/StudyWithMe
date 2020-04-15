@@ -35,6 +35,13 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    // Kako Login
+    // Kakao Login
     implementation group: project.KAKAO_SDK_GROUP, name: 'usermgmt', version: project.KAKAO_SDK_VERSION
+
+    // ExpandableBottomBar
+    // https://github.com/st235/ExpandableBottomBar
+    implementation 'com.github.st235:expandablebottombar:1.1.0'
+
+    // Recyclerview and CardView
+    implementation 'com.google.android.material:material:1.1.0'
 }

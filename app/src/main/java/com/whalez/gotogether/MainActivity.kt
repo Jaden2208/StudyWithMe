@@ -1,21 +1,16 @@
 package com.whalez.gotogether
 
 import android.content.Context
-import android.content.Intent
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewAnimationUtils
-import android.widget.Toast
 import androidx.core.graphics.ColorUtils
 import com.kakao.auth.Session
-import com.kakao.usermgmt.UserManagement
-import com.kakao.usermgmt.callback.LogoutResponseCallback
-import github.com.st235.lib_expandablebottombar.ExpandableBottomBar
+import com.whalez.gotogether.ui.group.GroupFragment
+import com.whalez.gotogether.ui.home.HomeFragment
+import com.whalez.gotogether.ui.todo.TodoFragment
+import com.whalez.gotogether.ui.setting.SettingFragment
 import github.com.st235.lib_expandablebottombar.ExpandableBottomBarMenuItem
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -28,11 +23,13 @@ class MainActivity : AppCompatActivity() {
         checkUserLoginStatus(this@MainActivity)
 
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment, HomeFragment()).commit()
+        transaction.replace(R.id.fragment,
+            HomeFragment()
+        ).commit()
         expandable_bottom_bar.onItemSelectedListener = { v, menuItem ->
             val fragment = when (menuItem.itemId) {
                 R.id.home -> HomeFragment()
-                R.id.schedule -> ScheduleFragment()
+                R.id.todo -> TodoFragment()
                 R.id.group -> GroupFragment()
                 R.id.setting -> SettingFragment()
                 else -> null
@@ -44,15 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        btn_logout.setOnClickListener {
-            UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
-                override fun onCompleteLogout() {
-                    kakaoLogin = 0
-                    goToLoginPage(this@MainActivity)
-                    Toast.makeText(this@MainActivity, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show()
-                }
-            })
-        }
+
     }
 
     private fun checkUserLoginStatus(context: Context) {
@@ -61,11 +50,6 @@ class MainActivity : AppCompatActivity() {
         else return
     }
 
-    private fun goToLoginPage(context: Context) {
-        val intent = Intent(context, LoginActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
 
     private fun showAnimation(v: View, i: ExpandableBottomBarMenuItem){
         val anim = ViewAnimationUtils.createCircularReveal(fragment,

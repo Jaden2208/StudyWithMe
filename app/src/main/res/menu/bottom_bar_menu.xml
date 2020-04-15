@@ -8,7 +8,7 @@
         app:exb_icon="@drawable/default_home_icon" />
 
     <item
-        android:id="@+id/schedule"
+        android:id="@+id/todo"
         android:title="@string/icon_schedule"
         app:exb_color="@color/color_schedule"
         app:exb_icon="@drawable/default_schedule_icon" />

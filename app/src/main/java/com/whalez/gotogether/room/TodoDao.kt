@@ -16,7 +16,7 @@ interface TodoDao {
     @Delete
     suspend fun delete(todo: Todo)
 
-    @Query("select * from Todo order by timestamp asc")
+    @Query("select * from Todo order by timestamp desc")
     fun getAllTodo(): LiveData<List<Todo>>
 
     @Query("delete from Todo")

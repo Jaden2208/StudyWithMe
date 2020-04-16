@@ -6,9 +6,74 @@
     android:layout_height="match_parent"
     tools:context="com.whalez.gotogether.ui.todo.AddTodoActivity">
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_save"
+        android:layout_margin="4dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageButton
+                android:id="@+id/btn_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/default_arrow_back"
+                android:background="@android:color/transparent"
+                android:layout_centerVertical="true"
+                android:padding="10dp"
+                android:adjustViewBounds="true"/>
+
+            <TextView
+                android:id="@+id/layout_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="새 할 일"
+                android:textColor="@android:color/black"
+                android:layout_alignParentEnd="true"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_year_month_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/layout_title"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="2020년 4월 15일"
+                android:textColor="@android:color/black"
+                android:textSize="15sp" />
+
+        </RelativeLayout>
+
+        <EditText
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_marginTop="4dp"
+            android:layout_height="match_parent"
+            android:background="@android:drawable/edit_text"
+            android:gravity="top"/>
+
+    </LinearLayout>
+
     <TextView
+        android:id="@+id/btn_save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="추가하는 화면입니다."/>
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="저장하기"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"/>
 
 </RelativeLayout>

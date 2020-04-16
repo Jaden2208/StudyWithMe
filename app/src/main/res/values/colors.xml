@@ -10,4 +10,6 @@
     <color name="color_group">#39f</color>
     <color name="color_setting">#fa2</color>
 
+    <color name="imageFilter">#50000000</color>
+
 </resources>

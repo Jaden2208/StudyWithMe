@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.room.Room
 import com.whalez.gotogether.room.TodoDatabase
 import com.whalez.gotogether.room.data.Todo
+import com.whalez.gotogether.shortToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

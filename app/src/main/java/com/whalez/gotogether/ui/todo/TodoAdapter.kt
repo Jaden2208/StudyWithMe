@@ -82,7 +82,7 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.MemoViewHolder>() {
 
             btnMore.setOnClickListener {
                 if (adapterPosition != RecyclerView.NO_POSITION) {
-                    listener.onItemClick(todoList[adapterPosition], itemView)
+                    listener.onItemClick(todoList[adapterPosition], it)
                 }
             }
         }

@@ -14,15 +14,20 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.skydoves.powermenu.kotlin.powerMenu
 import com.whalez.gotogether.*
 import com.whalez.gotogether.room.data.Todo
+import com.whalez.gotogether.ui.todo.TodoItemMenuFactory.Companion.DELETE
+import com.whalez.gotogether.ui.todo.TodoItemMenuFactory.Companion.EDIT
 import kotlinx.android.synthetic.main.fragment_todo.*
 
 class TodoFragment : Fragment() {
 
+    private lateinit var mContext: Context
     private lateinit var todoViewModel: TodoViewModel
     private lateinit var todoAdapter: TodoAdapter
-    private lateinit var mContext: Context
+
+    private val todoItemMenu by powerMenu(TodoItemMenuFactory::class)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,7 +54,7 @@ class TodoFragment : Fragment() {
 
         todoViewModel = ViewModelProvider(this)[TodoViewModel::class.java]
         todoViewModel.getAll().observe(viewLifecycleOwner,
-            Observer { todoList-> todoAdapter.setTodoList(todoList) }
+            Observer { todoList -> todoAdapter.setTodoList(todoList) }
         )
 
         // 할 일 추가하기.
@@ -61,9 +66,28 @@ class TodoFragment : Fragment() {
         // More 버튼 클릭 시.
         todoAdapter.setOnItemClickListener(object : TodoAdapter.OnMoreClickListener {
             override fun onItemClick(todo: Todo, view: View) {
-                shortToast(mContext, "More 버튼 클릭")
+                todoItemMenu!!.showAsDropDown(view)
             }
         })
+        todoItemMenu!!.setOnMenuItemClickListener { position, _ ->
+            when (position) {
+                EDIT -> {
+                    shortToast(mContext, "수정 버튼 클릭")
+                }
+                DELETE -> {
+                    val builder = simpleBuilder(mContext)
+                    builder.setMessage("할 일을 목록에서 삭제하시겠습니까?")
+                        .setCancelable(false)
+                        .setPositiveButton("예") { _, _ ->
+                            todoViewModel.delete(todoAdapter.getTodoAt(position))
+                            shortToast(mContext, "삭제되었습니다.")
+                        }
+                        .setNegativeButton("아니요") { _, _ -> }
+                        .show()
+
+                }
+            }
+        }
 
         // 슬라이드를 통한 아이템 삭제
         ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
@@ -95,7 +119,7 @@ class TodoFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == ADD_TODO_REQUEST && resultCode == RESULT_OK && data != null){
+        if (requestCode == ADD_TODO_REQUEST && resultCode == RESULT_OK && data != null) {
             val timestamp = data.getLongExtra(EXTRA_TIMESTAMP, -1)
             val content = data.getStringExtra(EXTRA_CONTENT)!!
 

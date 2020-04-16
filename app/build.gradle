@@ -65,4 +65,8 @@ dependencies {
     // Joda-Time
     // https://github.com/JodaOrg/joda-time
     implementation 'joda-time:joda-time:2.10.5'
+
+    // PowerMenu
+    // https://github.com/skydoves/PowerMenu
+    implementation "com.github.skydoves:powermenu:2.1.2"
 }

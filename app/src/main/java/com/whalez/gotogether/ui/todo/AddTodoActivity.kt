@@ -18,12 +18,12 @@ class AddTodoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_todo)
 
-        var timestamp = DateTime().millis
+        val year = DateTime().year
+        val month = DateTime().monthOfYear
+        val day = DateTime().dayOfMonth
+        var timestamp = DateTime(year, month, day, 0, 0, 0).millis
         btn_show_date_picker.text = DateTime().toString("yyyy년 MM월 dd일")
         btn_show_date_picker.setOnClickListener {
-            val year = DateTime().year
-            val month = DateTime().monthOfYear
-            val day = DateTime().dayOfMonth
             val dpd = DatePickerDialog(
                 this,
                 DatePickerDialog.OnDateSetListener { view, year, month, day ->

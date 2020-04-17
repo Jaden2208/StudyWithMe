@@ -7,7 +7,7 @@
 
     <!-- Fragment & Bottom Button Colors -->
     <color name="color_home">@android:color/white</color>
-    <color name="color_schedule">#9f9</color>
+    <color name="color_todo">#9f9</color>
     <color name="color_group">#39f</color>
     <color name="color_setting">#fa2</color>
 

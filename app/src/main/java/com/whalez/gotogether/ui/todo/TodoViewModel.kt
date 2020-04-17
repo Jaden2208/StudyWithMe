@@ -40,13 +40,17 @@ class TodoViewModel(application: Application): AndroidViewModel(application) {
         return db.todoDao().getAllTodo()
     }
 
+    fun getTodaysTodo(timestamp: Long): LiveData<String>{
+        return db.todoDao().getTodaysTodo(timestamp)
+    }
+
     fun deleteAll() {
         viewModelScope.launch(Dispatchers.IO) {
             db.todoDao().deleteAllTodo()
         }
     }
 
-    fun deleteSelectedMemos(idList: List<Int>){
+    fun deleteSelected(idList: List<Int>){
         viewModelScope.launch(Dispatchers.IO) {
             db.todoDao().deleteSelectedTodo(idList)
         }

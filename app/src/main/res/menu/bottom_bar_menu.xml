@@ -10,7 +10,7 @@
     <item
         android:id="@+id/todo"
         android:title="@string/icon_schedule"
-        app:exb_color="@color/color_schedule"
+        app:exb_color="@color/color_todo"
         app:exb_icon="@drawable/default_schedule_icon" />
 
     <item

@@ -62,7 +62,7 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.MemoViewHolder>() {
         private val todoItem: CardView = itemView.cv_todo_item
         val yearMonth: TextView = itemView.tv_year_month
         val date: TextView = itemView.tv_date
-        val content: TextView = itemView.tv_content
+        val content: TextView = itemView.et_content
         val btnMore: ImageButton = itemView.btn_more
 
         init {

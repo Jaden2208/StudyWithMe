@@ -1,25 +1,31 @@
 package com.whalez.gotogether.ui.todo
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.whalez.gotogether.EXTRA_CONTENT
+import com.whalez.gotogether.EXTRA_ID
 import com.whalez.gotogether.EXTRA_TIMESTAMP
 import com.whalez.gotogether.R
-import com.whalez.gotogether.shortToast
-import kotlinx.android.synthetic.main.activity_add_todo.*
+import kotlinx.android.synthetic.main.activity_edit_todo.*
 import org.joda.time.DateTime
-import java.util.*
 
-class AddTodoActivity : AppCompatActivity() {
+class EditTodoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_todo)
+        setContentView(R.layout.activity_edit_todo)
 
-        var timestamp = DateTime().millis
-        btn_show_date_picker.text = DateTime().toString("yyyy년 MM월 dd일")
+        var id = intent.getIntExtra(EXTRA_ID, -1)
+        var timestamp = intent.getLongExtra(EXTRA_TIMESTAMP, -1)
+        var content = intent.getStringExtra(EXTRA_CONTENT)
+
+        btn_show_date_picker.text = DateTime(timestamp).toString("yyyy년 MM월 dd일")
+        et_content.setText(content)
+
+        btn_back.setOnClickListener { finish() }
+
         btn_show_date_picker.setOnClickListener {
             val year = DateTime().year
             val month = DateTime().monthOfYear
@@ -38,20 +44,14 @@ class AddTodoActivity : AppCompatActivity() {
             dpd.show()
         }
 
-        btn_back.setOnClickListener { finish() }
-
-        btn_save.setOnClickListener {
-            val content = et_content.text.toString()
-            if (content.isEmpty()) {
-                shortToast(this, "저장할 내용이 없습니다!")
-                return@setOnClickListener
+        btn_update.setOnClickListener {
+            intent.apply {
+                putExtra(EXTRA_ID, id)
+                putExtra(EXTRA_TIMESTAMP, timestamp)
+                putExtra(EXTRA_CONTENT, et_content.text.toString())
             }
-            intent.putExtra(EXTRA_TIMESTAMP, timestamp)
-                .putExtra(EXTRA_CONTENT, content)
-            setResult(RESULT_OK, intent)
+            setResult(Activity.RESULT_OK, intent)
             finish()
         }
-
     }
-
 }

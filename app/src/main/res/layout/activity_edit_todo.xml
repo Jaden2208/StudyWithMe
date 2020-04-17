@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.whalez.gotogether.ui.todo.AddTodoActivity">
+    tools:context="com.whalez.gotogether.ui.todo.EditTodoActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:text="새 할 일"
+                        android:text="할 일 업데이트"
                         android:textColor="@android:color/black"
                         android:textSize="20sp" />
 
@@ -70,7 +70,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/btn_save"
+                android:id="@+id/btn_update"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

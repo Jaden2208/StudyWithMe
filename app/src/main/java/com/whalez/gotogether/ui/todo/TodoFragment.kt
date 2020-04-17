@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -72,7 +73,12 @@ class TodoFragment : Fragment() {
         todoItemMenu!!.setOnMenuItemClickListener { position, _ ->
             when (position) {
                 EDIT -> {
-                    shortToast(mContext, "수정 버튼 클릭")
+                    val todoItem = todoAdapter.getTodoAt(position)
+                    val intent = Intent(activity, EditTodoActivity::class.java)
+                    intent.putExtra(EXTRA_ID, todoItem.id)
+                    intent.putExtra(EXTRA_TIMESTAMP, todoItem.timestamp)
+                    intent.putExtra(EXTRA_CONTENT, todoItem.content)
+                    startActivityForResult(intent, EDIT_TODO_REQUEST)
                 }
                 DELETE -> {
                     val builder = simpleBuilder(mContext)
@@ -125,6 +131,15 @@ class TodoFragment : Fragment() {
 
             val todo = Todo(timestamp, content)
             todoViewModel.insert(todo)
+        } else if(requestCode == EDIT_TODO_REQUEST && resultCode == RESULT_OK && data != null){
+            val id = data.getIntExtra(EXTRA_ID, -1)
+            if(id == -1) return
+            val timestamp = data.getLongExtra(EXTRA_TIMESTAMP, -1L)
+            if(timestamp == -1L) return
+            val content = data.getStringExtra(EXTRA_CONTENT)!!
+            val todo = Todo(timestamp, content)
+            todo.id = id
+            todoViewModel.update(todo)
         }
     }
 }

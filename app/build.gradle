@@ -69,4 +69,5 @@ dependencies {
     // PowerMenu
     // https://github.com/skydoves/PowerMenu
     implementation "com.github.skydoves:powermenu:2.1.2"
+
 }

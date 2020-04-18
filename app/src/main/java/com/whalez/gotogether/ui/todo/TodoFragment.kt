@@ -47,7 +47,7 @@ class TodoFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         rv_todo.apply {
-            todoAdapter = TodoAdapter()
+            todoAdapter = TodoAdapter(TodoAdapter.TYPE_ALL_TODO)
             layoutManager = LinearLayoutManager(activity)
             adapter = todoAdapter
             setHasFixedSize(true)

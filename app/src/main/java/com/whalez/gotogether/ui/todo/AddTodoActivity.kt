@@ -3,14 +3,12 @@ package com.whalez.gotogether.ui.todo
 import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.whalez.gotogether.EXTRA_CONTENT
 import com.whalez.gotogether.EXTRA_TIMESTAMP
 import com.whalez.gotogether.R
 import com.whalez.gotogether.shortToast
 import kotlinx.android.synthetic.main.activity_add_todo.*
 import org.joda.time.DateTime
-import java.util.*
 
 class AddTodoActivity : AppCompatActivity() {
 
@@ -41,7 +39,7 @@ class AddTodoActivity : AppCompatActivity() {
         btn_back.setOnClickListener { finish() }
 
         btn_save.setOnClickListener {
-            val content = et_content.text.toString()
+            val content = tv_content.text.toString()
             if (content.isEmpty()) {
                 shortToast(this, "저장할 내용이 없습니다!")
                 return@setOnClickListener

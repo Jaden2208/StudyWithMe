@@ -40,7 +40,7 @@ class TodoViewModel(application: Application): AndroidViewModel(application) {
         return db.todoDao().getAllTodo()
     }
 
-    fun getTodaysTodo(timestamp: Long): LiveData<String>{
+    fun getTodaysTodo(timestamp: Long): LiveData<List<Todo>>{
         return db.todoDao().getTodaysTodo(timestamp)
     }
 

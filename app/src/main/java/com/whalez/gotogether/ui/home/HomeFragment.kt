@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.whalez.gotogether.R
 import com.whalez.gotogether.ui.todo.TodoAdapter
 import com.whalez.gotogether.ui.todo.TodoViewModel
@@ -33,8 +34,15 @@ class HomeFragment : Fragment() {
         val day = DateTime().dayOfMonth
         var timestamp = DateTime(year, month, day, 0, 0, 0).millis
 
+        rv_home_todo.apply {
+            todoAdapter = TodoAdapter(TodoAdapter.TYPE_ONLY_TODAY)
+            layoutManager = LinearLayoutManager(activity)
+            adapter = todoAdapter
+            setHasFixedSize(true)
+        }
+
         todoViewModel = ViewModelProvider(this)[TodoViewModel::class.java]
         todoViewModel.getTodaysTodo(timestamp).observe(viewLifecycleOwner,
-            Observer { content -> tv_today_todo.text = content })
+            Observer { todoList -> todoAdapter.setTodoList(todoList) })
     }
 }

@@ -22,7 +22,7 @@ class EditTodoActivity : AppCompatActivity() {
         var content = intent.getStringExtra(EXTRA_CONTENT)
 
         btn_show_date_picker.text = DateTime(timestamp).toString("yyyy년 MM월 dd일")
-        et_content.setText(content)
+        tv_content.setText(content)
 
         btn_back.setOnClickListener { finish() }
 
@@ -48,7 +48,7 @@ class EditTodoActivity : AppCompatActivity() {
             intent.apply {
                 putExtra(EXTRA_ID, id)
                 putExtra(EXTRA_TIMESTAMP, timestamp)
-                putExtra(EXTRA_CONTENT, et_content.text.toString())
+                putExtra(EXTRA_CONTENT, tv_content.text.toString())
             }
             setResult(Activity.RESULT_OK, intent)
             finish()

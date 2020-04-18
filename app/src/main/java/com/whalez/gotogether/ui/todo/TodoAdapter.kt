@@ -11,14 +11,20 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.whalez.gotogether.R
+//import com.whalez.gotogether.TODO_FRAGMENT
 import com.whalez.gotogether.room.data.Todo
+import kotlinx.android.synthetic.main.home_todo_item.view.*
 import kotlinx.android.synthetic.main.todo_item.view.*
 import org.joda.time.DateTime
 import kotlin.math.roundToInt
 
 
-class TodoAdapter : RecyclerView.Adapter<TodoAdapter.MemoViewHolder>() {
+class TodoAdapter(private val type: Int) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    companion object{
+        const val TYPE_ONLY_TODAY = 0
+        const val TYPE_ALL_TODO = 1
+    }
     private var todoList: List<Todo> = ArrayList()
 
     private var isSelectedItem = SparseBooleanArray(0)
@@ -28,21 +34,34 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.MemoViewHolder>() {
 
     private lateinit var listener: OnMoreClickListener
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MemoViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         context = parent.context
-        val inflate = LayoutInflater.from(parent.context)
-            .inflate(R.layout.todo_item, parent, false)
-        return MemoViewHolder(inflate)
+        val inflater = LayoutInflater.from(parent.context)
+        if(type == TYPE_ALL_TODO) {
+            val view = inflater.inflate(R.layout.todo_item, parent, false)
+            return TodoViewHolder(view)
+        } else {
+            val view = inflater.inflate(R.layout.home_todo_item, parent, false)
+            return HomeTodoViewHolder(view)
+        }
     }
 
-    override fun onBindViewHolder(holder: MemoViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val todo = todoList[position]
         val dateTime = DateTime(todo.timestamp)
-        holder.yearMonth.text = dateTime.toString("yyyy.MM")
-        holder.date.text = dateTime.toString("dd")
-        holder.content.text = todo.content
-        holder.changeVisibility(isSelectedItem[position])
-        holder.btnMore.visibility = if (isSelectedItem[position]) View.VISIBLE else View.GONE
+        if(type == TYPE_ALL_TODO) {
+            val mHolder = holder as TodoViewHolder
+            mHolder.yearMonth.text = dateTime.toString("yyyy.MM")
+            mHolder.date.text = dateTime.toString("dd")
+            mHolder.content.text = todo.content
+            mHolder.changeVisibility(isSelectedItem[position])
+            mHolder.btnMore.visibility = if (isSelectedItem[position]) View.VISIBLE else View.GONE
+        } else {
+            val mHolder = holder as HomeTodoViewHolder
+            mHolder.content.text = todo.content
+            mHolder.changeVisibility(isSelectedItem[position])
+        }
+
     }
 
     override fun getItemCount(): Int = todoList.size
@@ -56,13 +75,13 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.MemoViewHolder>() {
         notifyDataSetChanged()
     }
 
-    inner class MemoViewHolder(
+    inner class TodoViewHolder(
         itemView: View
     ) : RecyclerView.ViewHolder(itemView) {
         private val todoItem: CardView = itemView.cv_todo_item
         val yearMonth: TextView = itemView.tv_year_month
         val date: TextView = itemView.tv_date
-        val content: TextView = itemView.et_content
+        val content: TextView = itemView.tv_content
         val btnMore: ImageButton = itemView.btn_more
 
         init {
@@ -110,6 +129,53 @@ class TodoAdapter : RecyclerView.Adapter<TodoAdapter.MemoViewHolder>() {
             valueAnimator.start()
         }
     }
+
+    inner class HomeTodoViewHolder(
+        itemView: View
+    ) : RecyclerView.ViewHolder(itemView) {
+        private val todoItem: CardView = itemView.cv_today_todo_item
+        val content: TextView = itemView.tv_today_content
+
+        init {
+            itemView.setOnClickListener {
+                if (adapterPosition != RecyclerView.NO_POSITION) {
+                    if (isSelectedItem[adapterPosition]) {
+                        isSelectedItem.put(adapterPosition, false)
+                    } else {
+                        isSelectedItem.put(prePosition, false)
+                        isSelectedItem.put(adapterPosition, true)
+                    }
+                    if (prePosition != -1) notifyItemChanged(prePosition)
+                    notifyItemChanged(adapterPosition)
+                    prePosition = adapterPosition
+                }
+            }
+        }
+
+        fun changeVisibility(isExpanded: Boolean) {
+            val dpValue = 250
+            val d = context.resources.displayMetrics.density
+            val maxHeight = (dpValue * d).roundToInt()
+            val minHeight =
+                context.resources.getDimension(R.dimen.todo_item_min_height).roundToInt()
+
+            val valueAnimator =
+                if (isExpanded) ValueAnimator.ofInt(minHeight, maxHeight) else ValueAnimator.ofInt(
+                    maxHeight,
+                    minHeight
+                )
+            valueAnimator.duration = 200
+            valueAnimator.addUpdateListener {
+                val heightValue = it.animatedValue as Int
+                todoItem.apply {
+                    layoutParams.height = heightValue
+                    requestLayout()
+                }
+            }
+            valueAnimator.start()
+        }
+    }
+
 
     interface OnMoreClickListener {
         fun onItemClick(todo: Todo, view: View)

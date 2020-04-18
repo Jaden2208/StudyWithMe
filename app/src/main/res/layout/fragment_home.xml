@@ -18,28 +18,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:text="오늘의 할 일"
                 android:textColor="@android:color/black"
-                android:layout_margin="4dp"
                 android:textSize="18sp" />
 
-            <androidx.cardview.widget.CardView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_home_todo"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginBottom="4dp"
-                android:layout_marginHorizontal="4dp">
-
-                <TextView
-                    android:id="@+id/tv_today_todo"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:padding="4dp"
-                    android:text="안드로이드 개발~~" />
-
-            </androidx.cardview.widget.CardView>
+                android:layout_height="250dp"
+                android:background="@android:color/transparent"
+                android:paddingBottom="5dp" />
 
         </LinearLayout>
+
 
     </LinearLayout>
 

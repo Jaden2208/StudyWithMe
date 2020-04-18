@@ -19,8 +19,8 @@ interface TodoDao {
     @Query("select * from Todo order by timestamp desc")
     fun getAllTodo(): LiveData<List<Todo>>
 
-    @Query("select content from Todo where timestamp=(:timestamp)")
-    fun getTodaysTodo(timestamp: Long): LiveData<String>
+    @Query("select * from Todo where timestamp=(:timestamp)")
+    fun getTodaysTodo(timestamp: Long): LiveData<List<Todo>>
 
     @Query("delete from Todo")
     fun deleteAllTodo()

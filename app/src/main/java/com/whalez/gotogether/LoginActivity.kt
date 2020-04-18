@@ -6,25 +6,32 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
+import com.kakao.network.ErrorResult
+import com.kakao.usermgmt.UserManagement
+import com.kakao.usermgmt.callback.MeV2ResponseCallback
+import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.exception.KakaoException
 
 
 class LoginActivity : AppCompatActivity() {
 
-        private val sessionCallback = object : ISessionCallback {
+    private lateinit var userNickname: String
+    private lateinit var userProfileImgUrl: String
+
+    private val sessionCallback = object : ISessionCallback {
         override fun onSessionOpenFailed(exception: KakaoException?) {
             Log.d("kkk", "로그인 실패: ${exception.toString()}")
         }
 
         override fun onSessionOpened() {
-            if(kakaoLogin == 0){
+            if (kakaoLogin == 0) {
+                saveUserInfoToFirestore()
                 kakaoLogin = 1
                 val intent = Intent(this@LoginActivity, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +55,27 @@ class LoginActivity : AppCompatActivity() {
             return
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun saveUserInfoToFirestore() {
+        UserManagement.getInstance().me(object : MeV2ResponseCallback() {
+            override fun onSuccess(result: MeV2Response?) {
+                if (result == null) {
+                    Log.d("kkkgetUserInfo", "result == null")
+                    return
+                }
+                val kakaoProfile = result.kakaoAccount.profile
+                userNickname = kakaoProfile.nickname
+                userProfileImgUrl = kakaoProfile.profileImageUrl
+                Log.d("kkkNickName", userNickname)
+                Log.d("kkkuserProfileImgUrl", userProfileImgUrl)
+            }
+
+            override fun onSessionClosed(errorResult: ErrorResult?) {
+                Log.d("kkkgetUserInfo", errorResult!!.errorMessage)
+            }
+
+        })
     }
 
 

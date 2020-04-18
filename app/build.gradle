@@ -2,13 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
 
     defaultConfig {
-        applicationId "com.whalez.studywithme"
+        applicationId "com.whalez.gotogether"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
@@ -75,5 +76,8 @@ dependencies {
     // PowerMenu
     // https://github.com/skydoves/PowerMenu
     implementation "com.github.skydoves:powermenu:2.1.2"
+
+    // Firebase Firestore
+    implementation 'com.google.firebase:firebase-firestore:21.4.2'
 
 }

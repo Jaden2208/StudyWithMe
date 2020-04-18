@@ -24,8 +24,8 @@ class AddTodoActivity : AppCompatActivity() {
         btn_show_date_picker.setOnClickListener {
             val dpd = DatePickerDialog(
                 this,
-                DatePickerDialog.OnDateSetListener { view, year, month, day ->
-                    val changedTime = DateTime(year, month, day, 0, 0, 0)
+                DatePickerDialog.OnDateSetListener { _, y, m, d ->
+                    val changedTime = DateTime(y, m, d, 0, 0, 0)
                     timestamp = changedTime.millis
                     btn_show_date_picker.text = changedTime.toString("yyyy년 MM월 dd일")
                 },

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.firestore.FirebaseFirestore
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
 import com.kakao.network.ErrorResult
@@ -11,6 +12,8 @@ import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.MeV2ResponseCallback
 import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.exception.KakaoException
+import org.json.JSONObject
+import java.util.*
 
 
 class LoginActivity : AppCompatActivity() {
@@ -61,18 +64,34 @@ class LoginActivity : AppCompatActivity() {
         UserManagement.getInstance().me(object : MeV2ResponseCallback() {
             override fun onSuccess(result: MeV2Response?) {
                 if (result == null) {
-                    Log.d("kkkgetUserInfo", "result == null")
+                    Log.d("kkkGetUserInfo", "result == null")
                     return
                 }
                 val kakaoProfile = result.kakaoAccount.profile
                 userNickname = kakaoProfile.nickname
                 userProfileImgUrl = kakaoProfile.profileImageUrl
-                Log.d("kkkNickName", userNickname)
-                Log.d("kkkuserProfileImgUrl", userProfileImgUrl)
+                val uuid = UUID.randomUUID().toString()
+                val user = hashMapOf(
+                    "uuid" to uuid,
+                    "nickname" to userNickname,
+                    "profile_img_url" to userProfileImgUrl,
+                    "group" to ""
+                )
+
+                Log.d("kkkNickName", user["nickname"].toString())
+
+//                val firestore = FirebaseFirestore.getInstance()
+//                firestore.collection("users").add(user)
+//                    .addOnSuccessListener {
+//                        Log.d("kkk", "DocumentSnapshot added with ID: ${it.id}")
+//                    }
+//                    .addOnFailureListener {
+//                        Log.d("kkk", "fail to save user info")
+//                    }
             }
 
             override fun onSessionClosed(errorResult: ErrorResult?) {
-                Log.d("kkkgetUserInfo", errorResult!!.errorMessage)
+                Log.d("kkkSessionClosed", errorResult!!.errorMessage)
             }
 
         })
